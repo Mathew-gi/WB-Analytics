@@ -88,6 +88,35 @@ function formatDateISO(ts: number | string | Date) {
 const ENV_DEFAULT_LIMIT = Number(import.meta.env.VITE_DEFAULT_LIMIT) || 100;
 const ENV_DEFAULT_DATE_FROM = import.meta.env.VITE_DEFAULT_DATE_FROM ?? "2014-01-01";
 
+function buildRequestUrl(endpoint: string, params: Record<string, any>) {
+  let url: URL;
+  try {
+    url = new URL(endpoint);
+  } catch {
+    url = new URL(endpoint, window.location.origin);
+  }
+
+  Object.keys(params || {}).forEach((k) => {
+    const v = params[k];
+    if (v === undefined || v === null) return;
+    if (Array.isArray(v)) {
+      v.forEach((val) => url.searchParams.append(k, String(val)));
+    } else {
+      url.searchParams.set(k, String(v));
+    }
+  });
+
+  const pageIsHttps = window.location.protocol === "https:";
+  const targetIsHttp = url.protocol === "http:";
+  const PROXY_PREFIX = import.meta.env.VITE_API_PROXY_URL ?? "https://corsproxy.io/?";
+
+  if (pageIsHttps && targetIsHttp) {
+    return `${PROXY_PREFIX}${encodeURIComponent(url.toString())}`;
+  }
+
+  return url.toString();
+}
+
 async function defaultFetcherWithEndpoint(): Promise<any[]> {
   if (!props.endpoint) return [];
   const params: Record<string, any> = { ...(props.requestParams ?? {}) };
@@ -115,7 +144,10 @@ async function defaultFetcherWithEndpoint(): Promise<any[]> {
   params.page = 1;
   params.limit = props.pageSizeDefault ?? ENV_DEFAULT_LIMIT;
 
-  const res = await axios.get(props.endpoint!, { params });
+  const finalUrl = buildRequestUrl(props.endpoint!, params);
+
+  const res = await axios.get(finalUrl, {
+  });
   return res.data?.data ?? res.data ?? [];
 }
 
@@ -159,7 +191,6 @@ function parseDateToTs(value: any) {
   if (!value) return NaN;
   if (typeof value === "number") return value;
   if (typeof value === "string") {
-    // dd.mm.yyyy
     if (/^\d{2}\.\d{2}\.\d{4}$/.test(value)) {
       const [d, m, y] = value.split(".");
       return y && m && d ? new Date(+y, +m - 1, +d).getTime() : NaN;
@@ -565,3 +596,4 @@ label {
   }
 }
 </style>
+``` 
