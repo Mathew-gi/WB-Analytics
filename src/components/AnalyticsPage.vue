@@ -86,15 +86,11 @@ function formatDateISO(ts: number | string | Date) {
 }
 
 const ENV_DEFAULT_LIMIT = Number(import.meta.env.VITE_DEFAULT_LIMIT) || 100;
-const ENV_DEFAULT_DATE_FROM = import.meta.env.VITE_DEFAULT_DATE_FROM ?? "2014-01-01";
+const ENV_DEFAULT_DATE_FROM =
+  import.meta.env.VITE_DEFAULT_DATE_FROM ?? "2014-01-01";
 
 function buildRequestUrl(endpoint: string, params: Record<string, any>) {
-  let url: URL;
-  try {
-    url = new URL(endpoint);
-  } catch {
-    url = new URL(endpoint, window.location.origin);
-  }
+  let url = new URL(endpoint, window.location.origin);
 
   Object.keys(params || {}).forEach((k) => {
     const v = params[k];
@@ -105,14 +101,6 @@ function buildRequestUrl(endpoint: string, params: Record<string, any>) {
       url.searchParams.set(k, String(v));
     }
   });
-
-  const pageIsHttps = window.location.protocol === "https:";
-  const targetIsHttp = url.protocol === "http:";
-  const PROXY_PREFIX = import.meta.env.VITE_API_PROXY_URL ?? "https://corsproxy.io/?";
-
-  if (pageIsHttps && targetIsHttp) {
-    return `${PROXY_PREFIX}${encodeURIComponent(url.toString())}`;
-  }
 
   return url.toString();
 }
@@ -146,8 +134,7 @@ async function defaultFetcherWithEndpoint(): Promise<any[]> {
 
   const finalUrl = buildRequestUrl(props.endpoint!, params);
 
-  const res = await axios.get(finalUrl, {
-  });
+  const res = await axios.get(finalUrl, {});
   return res.data?.data ?? res.data ?? [];
 }
 
@@ -253,7 +240,8 @@ const chartDataComputed = computed(() => {
   const isStocksEndpoint =
     !!props.endpoint && props.endpoint.includes("/stocks");
   const useWarehouseGrouping =
-    isStocksEndpoint || (props.sumField === "quantity_full" && !props.hasDateRange);
+    isStocksEndpoint ||
+    (props.sumField === "quantity_full" && !props.hasDateRange);
 
   const grouped: Record<string, number> = {};
 
@@ -596,4 +584,4 @@ label {
   }
 }
 </style>
-``` 
+```

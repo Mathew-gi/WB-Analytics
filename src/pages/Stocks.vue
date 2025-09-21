@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AnalyticsPage from "../components/AnalyticsPage.vue";
 
-const apiHost = import.meta.env.VITE_API_HOST ?? "http://109.73.206.144:6969";
+const apiHost = "/api";
 const apiKey = import.meta.env.VITE_API_KEY ?? "E6kUTYrYwZq2tN4QEtyzsbEBk3ie";
 
 const columns = [
