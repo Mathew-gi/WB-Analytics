@@ -18,7 +18,7 @@ const columns = [
   { title: "Скидка %", key: "discount", width: 100 },
 ];
 
-const endpoint = `${apiHost}/api/stocks`;
+const endpoint = `${apiHost}/stocks`;
 const requestParams = { key: apiKey };
 </script>
 

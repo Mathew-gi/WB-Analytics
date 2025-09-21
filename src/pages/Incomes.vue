@@ -14,7 +14,7 @@ const columns = [
   { title: "Склад", key: "warehouse_name", width: 200 },
 ];
 
-const endpoint = `${apiHost}/api/incomes`;
+const endpoint = `${apiHost}/incomes`;
 const requestParams = { key: apiKey };
 </script>
 

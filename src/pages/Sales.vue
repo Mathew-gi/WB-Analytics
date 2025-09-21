@@ -24,7 +24,7 @@ const columns = [
   },
 ];
 
-const endpoint = `${apiHost}/api/sales`;
+const endpoint = `${apiHost}/sales`;
 const requestParams = { key: apiKey };
 </script>
 
