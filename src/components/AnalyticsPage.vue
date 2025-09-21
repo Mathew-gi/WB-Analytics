@@ -134,8 +134,6 @@ async function defaultFetcherWithEndpoint(): Promise<any[]> {
 
   const finalUrl = buildRequestUrl(props.endpoint!, params);
 
-  console.log('Fetching URL:', finalUrl);
-
   const res = await axios.get(finalUrl, {});
   return res.data?.data ?? res.data ?? [];
 }
@@ -462,7 +460,14 @@ const displayedPagedData = computed(() => {
               :scroll-x="1200"
               striped
               size="large"
-            />
+            >
+              <template #empty>
+                <NEmpty
+                  description="Нет данных для отображения"
+                  style="margin-top: 40px"
+                />
+              </template>
+            </NDataTable>
             <div class="pagination-container">
               <NPagination
                 v-model:page="page"
@@ -500,6 +505,10 @@ h1 {
 .page-header-adaptive .n-page-header__subtitle p {
   font-size: 16px;
   color: #64748b;
+}
+
+.page-header-adaptive {
+  padding: 10px;
 }
 
 .status-container {
@@ -559,6 +568,14 @@ label {
     align-items: center;
     text-align: center;
   }
+
+  .page-header-adaptive {
+    width: 100%;
+  }
+  .page-header-adaptive :deep(.n-page-header) {
+    width: 100%;
+    display: block;
+  }
 }
 
 @media (max-width: 480px) {
@@ -586,4 +603,3 @@ label {
   }
 }
 </style>
-```

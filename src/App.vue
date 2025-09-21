@@ -120,6 +120,27 @@ body {
   padding: 32px 32px 0 32px;
   background-color: #f8fafc;
   transition: padding 0.3s ease;
+  
+}
+
+.app-content ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.app-content ::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+
+.app-content ::-webkit-scrollbar-thumb {
+  background-color: #3b82f6;
+  border-radius: 4px;
+  border: 2px solid #F8FAFC;
+}
+
+.app-content {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #F8FAFC;
 }
 
 @media (max-width: 768px) {
