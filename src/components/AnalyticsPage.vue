@@ -134,6 +134,8 @@ async function defaultFetcherWithEndpoint(): Promise<any[]> {
 
   const finalUrl = buildRequestUrl(props.endpoint!, params);
 
+  console.log('Fetching URL:', finalUrl);
+
   const res = await axios.get(finalUrl, {});
   return res.data?.data ?? res.data ?? [];
 }
